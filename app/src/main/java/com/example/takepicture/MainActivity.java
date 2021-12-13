@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mimageView;
     private static final int REQUEST_IMAGE_CAPTURE=101;
     private Button btSubmit;
+    private TextView tvResult;
  //   private List<Datum> dat;
 
     String sBaseUrl="http://abrh.insense.com.tr/";
@@ -37,9 +39,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mimageView=findViewById(R.id.imageView);
         btSubmit=findViewById(R.id.bt_submit);
+        tvResult=findViewById(R.id.tvResult);
+
         btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override //get request
-            public void onClick(View v) {
+            /*public void onClick(View v) {
                 Methods methods = RetrofitClient.getRetrofitInstance().create(Methods.class);
                 Call<Model> call =methods.getAllData();
                 call.enqueue(new Callback<Model>() {
@@ -55,20 +59,24 @@ public class MainActivity extends AppCompatActivity {
                     public void onFailure(Call<Model> call, Throwable t) {
                         Log.e(TAG, "onFailure: "+t.getMessage() );
                     }
-                });
+                });*/
                 //post request
-          /*  public void onClick(View v) {
+            public void onClick(View v) {
                 ApiInterface methods = RetrofitClient.getRetrofitInstance().create(ApiInterface.class);
-                Call<Model> call =methods.getBloodData("test");
+                PhotoSendReq req = new PhotoSendReq();
+                req.setImage("test");
+                Call<Model> call =methods.getBloodData(req);
                 Log.e(TAG, "onClick: "+call.toString() );
                 call.enqueue(new Callback<Model>() {
                     @Override
                     public void onResponse(Call<Model> call, Response<Model> response) {
-                        Log.e(TAG,"onResponse: code "+response.code());
-                        Log.e(TAG, "onResponse: code "+response.body() );
-                      //  Log.e(TAG, "onResponse:message "+response.body().getMessage() );
-                      //  Log.e(TAG, "onResponse: errors "+response.body().getErrors() );
-
+                     if(response.body() != null){
+                         Log.e(TAG,"onResponse: code "+response.code());
+                         Log.e(TAG, "onResponse: code "+response.body().getMessage() );
+                         //  Log.e(TAG, "onResponse:message "+response.body().getMessage() );
+                         //  Log.e(TAG, "onResponse: errors "+response.body().getErrors() );
+                         tvResult.setText(response.body().getMessage());
+                     }
                        // ArrayList<Model>
                     }
 
@@ -76,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onFailure(Call<Model> call, Throwable t) {
                         Log.e(TAG, "onFailure: "+t.getMessage() );
                     }
-                });*/
+                });
 
             }
         });
@@ -103,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             mimageView.setImageBitmap(imageBitmap);
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream .toByteArray();
             String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
             Log.e(TAG, "base64 : "+encoded );

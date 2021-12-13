@@ -1,38 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:orientation="vertical"
-    >
+    tools:context=".MainActivity">
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Resim Cek"
-        android:onClick="takePicture"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="55dp"
+        android:onClick="takePicture"
+        android:text="Resim Cek"
 
         />
+
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:src="@mipmap/ic_launcher"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="55dp"
-        android:id="@+id/imageView"
-        />
-<Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/bt_submit"
-    android:text="Gonder"
-    android:layout_gravity="center_horizontal"
-android:layout_marginTop="40dp"
-    android:onClick="sendPicture"
-    />
+        android:src="@mipmap/ic_launcher" />
+
+    <Button
+        android:id="@+id/bt_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:onClick="sendPicture"
+        android:text="Gonder" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text=""
+        android:gravity="center"
+        android:layout_marginTop="32dp"
+        android:id="@+id/tvResult"/>
 
 </LinearLayout>
