@@ -28,9 +28,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE=101;
     private Button btSubmit;
     private TextView tvResult;
+    public String encoded ="";
  //   private List<Datum> dat;
 
-    String sBaseUrl="http://abrh.insense.com.tr/";
+   // String sBaseUrl="";
 
 
     @Override
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ApiInterface methods = RetrofitClient.getRetrofitInstance().create(ApiInterface.class);
                 PhotoSendReq req = new PhotoSendReq();
-                req.setImage("test");
+                req.setImage(encoded.toString());
                 Call<Model> call =methods.getBloodData(req);
                 Log.e(TAG, "onClick: "+call.toString() );
                 call.enqueue(new Callback<Model>() {
@@ -76,13 +77,16 @@ public class MainActivity extends AppCompatActivity {
                          //  Log.e(TAG, "onResponse:message "+response.body().getMessage() );
                          //  Log.e(TAG, "onResponse: errors "+response.body().getErrors() );
                          tvResult.setText(response.body().getMessage());
+
                      }
+                        encoded="";
                        // ArrayList<Model>
                     }
 
                     @Override
                     public void onFailure(Call<Model> call, Throwable t) {
                         Log.e(TAG, "onFailure: "+t.getMessage() );
+                        encoded="";
                     }
                 });
 
@@ -111,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
             mimageView.setImageBitmap(imageBitmap);
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream .toByteArray();
-            String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+             encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
             Log.e(TAG, "base64 : "+encoded );
 
         }
