@@ -2,6 +2,7 @@ package com.example.takepicture;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -15,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,15 +35,35 @@ public class MainActivity extends AppCompatActivity {
  //   private List<Datum> dat;
 
    // String sBaseUrl="";
+   // One Button
+   Button BSelectImage;
+
+    // One Preview Image
+ //   ImageView IVPreviewImage;
+
+    // constant to compare
+    // the activity result code
+    int SELECT_PICTURE = 200;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mimageView=findViewById(R.id.imageView);
         btSubmit=findViewById(R.id.bt_submit);
         tvResult=findViewById(R.id.tvResult);
+
+        BSelectImage = findViewById(R.id.BSelectImage);
+    //    IVPreviewImage = findViewById(R.id.IVPreviewImage);
+
+        BSelectImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageChooser();
+            }
+        });
 
         btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override //get request
@@ -79,14 +102,14 @@ public class MainActivity extends AppCompatActivity {
                          tvResult.setText(response.body().getMessage());
 
                      }
-                        encoded="";
+                     //   encoded="";
                        // ArrayList<Model>
                     }
 
                     @Override
                     public void onFailure(Call<Model> call, Throwable t) {
                         Log.e(TAG, "onFailure: "+t.getMessage() );
-                        encoded="";
+                       // encoded="";
                     }
                 });
 
@@ -95,9 +118,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    void imageChooser() {
+
+        // create an instance of the
+        // intent of the type image
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+
+        // pass the constant to compare it
+        // with the returned requestCode
+        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
+    }
 
     public void takePicture(View view) {
-
+encoded="";
         Intent imageTakeIntent =new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         if(imageTakeIntent.resolveActivity(getPackageManager())!= null){
@@ -121,10 +156,36 @@ public class MainActivity extends AppCompatActivity {
             Log.e(TAG, "base64 : "+encoded );
 
         }
+        if (requestCode == SELECT_PICTURE) {
+            // Get the url of the image from data
+            Uri selectedImageUri = data.getData();
+            if (null != selectedImageUri) {
+                // update the preview image in the layout
+               // IVPreviewImage.setImageURI(selectedImageUri);
+                mimageView.setImageURI(selectedImageUri);
+
+                Uri imageUri = Objects.requireNonNull(data).getData();
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                    byte[] imageBytes = imageToByteArray(bitmap);
+                    encoded = Base64.encodeToString(imageBytes, Base64.DEFAULT); // actual conversion to Base64 String Image
+                    // display the Base64 String Image encoded text
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }
 
 
     }
-
+    private byte[] imageToByteArray(Bitmap bitmapImage) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmapImage.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+        return baos.toByteArray();
+    }
     public interface APIService {
         @GET("api/auth/verify/")
         Call<VeriListem> verilerimilistele();
