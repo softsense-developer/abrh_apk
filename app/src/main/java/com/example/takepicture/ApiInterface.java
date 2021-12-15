@@ -10,7 +10,7 @@ import retrofit2.http.POST;
 public interface ApiInterface {
 
     @Headers({"Content-Type: application/json", "Cache-Control: max-age=640000"})
-    @POST("api/auth/register")
+    @POST("api/auth/redeyeanalysis")
     Call<Model> getBloodData(@Body PhotoSendReq req);
 
 }

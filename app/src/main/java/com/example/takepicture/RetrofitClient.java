@@ -7,7 +7,7 @@ public class RetrofitClient {
 
 
     private static Retrofit retrofit;
-    private static String BASE_URL  ="http://192.168.1.3:45457/";
+    private static String BASE_URL  ="http://abrh.smartsense.com.tr/";
 
     public static Retrofit getRetrofitInstance(){
         if(retrofit==null){
