@@ -22,11 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:text="Yukle"
         android:textColor="@android:color/white"
         android:textSize="18sp" />
-
 
 
     <ImageView
@@ -34,27 +33,28 @@
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="55dp"
-        android:src="@mipmap/ic_launcher" />
-
-    <Button
-        android:id="@+id/bt_submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:onClick="sendPicture"
-        android:text="Gonder" />
+        android:layout_marginTop="5dp"
+        android:src="@mipmap/ic_launcher_eye" />
 
     <TextView
         android:id="@+id/tvResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="3dp"
         android:gravity="center"
         android:text=""
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="20sp"
         android:textStyle="bold" />
+    <Button
+        android:id="@+id/bt_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="2dp"
+        android:onClick="sendPicture"
+        android:text="Gonder" />
+
+
 
 </LinearLayout>

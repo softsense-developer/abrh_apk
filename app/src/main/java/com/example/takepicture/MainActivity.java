@@ -70,23 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override //get request
-            /*public void onClick(View v) {
-                Methods methods = RetrofitClient.getRetrofitInstance().create(Methods.class);
-                Call<Model> call =methods.getAllData();
-                call.enqueue(new Callback<Model>() {
-                    @Override
-                    public void onResponse(Call<Model> call, Response<Model> response) {
-                        Log.e(TAG,"onResponse: code"+response.code());
-                        Log.e(TAG, "onResponse: "+response.body().getMessage() );
-
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Model> call, Throwable t) {
-                        Log.e(TAG, "onFailure: "+t.getMessage() );
-                    }
-                });*/
+           
                 //post request
             public void onClick(View v) {
                 ApiInterface methods = RetrofitClient.getRetrofitInstance().create(ApiInterface.class);
