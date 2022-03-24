@@ -121,22 +121,21 @@ public class MainActivity extends AppCompatActivity {
     public void takePicture(View view) {
 encoded="";
 
-        CropImage.activity()
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .start(this);
+      CropImage.activity()
+              .setGuidelines(CropImageView.Guidelines.ON)
+              .start(this);
 
-      //  Intent imageTakeIntent =new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        //if(imageTakeIntent.resolveActivity(getPackageManager())!= null){
-          //  startActivityForResult(imageTakeIntent,REQUEST_IMAGE_CAPTURE);
-        // }
+     // Intent imageTakeIntent =new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+      //if(imageTakeIntent.resolveActivity(getPackageManager())!= null){
+        ///  startActivityForResult(imageTakeIntent,REQUEST_IMAGE_CAPTURE);
+        //}
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+       /* if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             mimageView.setImageBitmap(imageBitmap);
@@ -170,12 +169,30 @@ encoded="";
 
             }
         }
-
+*/
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                mimageView.setImageURI(resultUri);
+
+                if (null != resultUri) {
+                    mimageView.setImageURI(resultUri);
+
+                    //Uri imageUri = Objects.requireNonNull(data).getData();
+                    Bitmap bitmap = null;
+
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+                        byte[] imageBytes = imageToByteArray(bitmap);
+                        encoded = Base64.encodeToString(imageBytes, Base64.DEFAULT); // actual conversion to Base64 String Image
+                        // display the Base64 String Image encoded text
+                    } catch (IOException e) {
+                        Log.e("err",e.getMessage());
+                        e.printStackTrace();
+                    }
+                }else{
+                    Log.e("image",null);
+                }
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
