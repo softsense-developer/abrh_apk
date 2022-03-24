@@ -15,6 +15,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Objects;
@@ -133,11 +136,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void takePicture(View view) {
 encoded="";
-        Intent imageTakeIntent =new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        if(imageTakeIntent.resolveActivity(getPackageManager())!= null){
-            startActivityForResult(imageTakeIntent,REQUEST_IMAGE_CAPTURE);
-        }
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(this);
+
+      //  Intent imageTakeIntent =new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        //if(imageTakeIntent.resolveActivity(getPackageManager())!= null){
+          //  startActivityForResult(imageTakeIntent,REQUEST_IMAGE_CAPTURE);
+        // }
     }
 
     @Override
@@ -166,6 +174,7 @@ encoded="";
 
                 Uri imageUri = Objects.requireNonNull(data).getData();
                 Bitmap bitmap = null;
+
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                     byte[] imageBytes = imageToByteArray(bitmap);
@@ -175,10 +184,19 @@ encoded="";
                     e.printStackTrace();
                 }
 
-
             }
         }
 
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                mimageView.setImageURI(resultUri);
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
 
     }
     private byte[] imageToByteArray(Bitmap bitmapImage) {
