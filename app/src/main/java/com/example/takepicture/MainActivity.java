@@ -58,15 +58,15 @@ public class MainActivity extends AppCompatActivity {
         btSubmit=findViewById(R.id.bt_submit);
         tvResult=findViewById(R.id.tvResult);
 
-        BSelectImage = findViewById(R.id.BSelectImage);
+      //  BSelectImage = findViewById(R.id.BSelectImage);
     //    IVPreviewImage = findViewById(R.id.IVPreviewImage);
 
-        BSelectImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageChooser();
-            }
-        });
+    //    BSelectImage.setOnClickListener(new View.OnClickListener() {
+      //      @Override
+        //    public void onClick(View v) {
+          //      imageChooser();
+           // }
+       // });
 
         btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override //get request
@@ -119,14 +119,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void takePicture(View view) {
-encoded="";
-
+        encoded="";
       CropImage.activity()
               .setGuidelines(CropImageView.Guidelines.ON)
               .start(this);
 
-     // Intent imageTakeIntent =new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-      //if(imageTakeIntent.resolveActivity(getPackageManager())!= null){
+        tvResult.setText(" ");
+        //Intent imageTakeIntent =new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //if(imageTakeIntent.resolveActivity(getPackageManager())!= null){
         ///  startActivityForResult(imageTakeIntent,REQUEST_IMAGE_CAPTURE);
         //}
     }
@@ -135,7 +135,7 @@ encoded="";
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-       /* if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             mimageView.setImageBitmap(imageBitmap);
@@ -169,7 +169,7 @@ encoded="";
 
             }
         }
-*/
+
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
