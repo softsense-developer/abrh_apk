@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
     public void takePicture(View view) {
         encoded="";
       CropImage.activity()
+              .setCropMenuCropButtonTitle("Kırp")
               .setGuidelines(CropImageView.Guidelines.ON)
               .start(this);
 
